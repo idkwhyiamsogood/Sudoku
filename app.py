@@ -1,26 +1,46 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
-from Buttons.Buttons import WhiteButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QPushButton
+
+# Импорт моих классов
+from UI.widgets.buttons.WhiteButton import WhiteButton
 
 class MainWindow(QMainWindow):
+    
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("My App")
 
-        central_widget = QWidget()
-        layout = QVBoxLayout()
-        central_widget.setLayout(layout)
-        self.setCentralWidget(central_widget)
+        self.central_widget = QWidget()
+        self.main_layout = QGridLayout()  
+        self.central_widget.setLayout(self.main_layout)
+        self.setCentralWidget(self.central_widget)
+
+        self.setup_page()
+
+        self.setStyleSheet("""
+            QMainWindow {
+                background-color: white;
+            }
+        """)
+
+    def setup_page(self):
+
+        btn_start = WhiteButton("Начать игру", (200, 50))
+        btn_start.clicked.connect(self.redraw_page)  
+        self.main_layout.addWidget(btn_start, 0, 0)  
+
+    def redraw_page(self):
         
-        button1 = WhiteButton(1, "Button", (150, 50))
-        button2 = WhiteButton(2, "Button", (200, 60))
-        button3 = WhiteButton(3, "Click Me", (180, 40))
+        for i in reversed(range(self.main_layout.count())):
+            widget = self.main_layout.itemAt(i).widget()
+            if widget:
+                widget.deleteLater()
         
-        layout.addWidget(button1)
-        layout.addWidget(button2)
-        layout.addWidget(button3)
-        
+        for i in range(9):
+            for j in range(9):
+                cell = WhiteButton("")
+                self.main_layout.addWidget(cell, i, j)
 
 app = QApplication(sys.argv)
 
