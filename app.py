@@ -1,25 +1,26 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from Buttons.Buttons import WhiteButton
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.button_is_checked = True
-
         self.setWindowTitle("My App")
 
-        self.button = QPushButton("Press Me!")
-        self.button.setCheckable(True)
-        self.button.released.connect(self.the_button_was_released)
-        self.button.setChecked(self.button_is_checked)
-
-        self.setCentralWidget(self.button)
-
-    def the_button_was_released(self):
-        self.button_is_checked = self.button.isChecked()
-
-        print(self.button_is_checked)
+        central_widget = QWidget()
+        layout = QVBoxLayout()
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+        
+        button1 = WhiteButton(1, "Button", (150, 50))
+        button2 = WhiteButton(2, "Button", (200, 60))
+        button3 = WhiteButton(3, "Click Me", (180, 40))
+        
+        layout.addWidget(button1)
+        layout.addWidget(button2)
+        layout.addWidget(button3)
+        
 
 app = QApplication(sys.argv)
 
