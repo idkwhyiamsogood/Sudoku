@@ -1,7 +1,7 @@
 from PyQt6 import QtGui
 from PyQt6.QtWidgets import QPushButton
 
-class WhiteButton(QPushButton):
+class GrayButton(QPushButton):
     def __init__(self, text: str, size: tuple = (100, 50)) -> None:
         super().__init__()
 
@@ -19,6 +19,7 @@ class WhiteButton(QPushButton):
                 padding: 10px 20px;
                 text-decoration: none;
                 border: 1px solid black;
+                background-color: #BDBBBB;
             }}
             
             QPushButton:hover {{
