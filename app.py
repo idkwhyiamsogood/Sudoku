@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QPu
 # Импорт моих классов
 from UI.widgets.buttons.WhiteButton import WhiteButton
 from UI.widgets.buttons.GrayButton import GrayButton
+from UI.widgets.buttons.CustomButton import CustomButton
 
 class MainWindow(QMainWindow):
     
@@ -20,7 +21,8 @@ class MainWindow(QMainWindow):
         self.main_layout.setHorizontalSpacing(0)
         self.main_layout.setVerticalSpacing(0)
             
-        self.central_widget.setFixedSize(50 * 9 + 20, 50 * 9 + 20)
+        #self.central_widget.setFixedSize(50 * 9 + 20, 50 * 9 + 20)
+        self.setFixedSize(50 * 9 + 20, 50 * 9 + 20)
         
         self.central_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.central_widget)
@@ -37,7 +39,7 @@ class MainWindow(QMainWindow):
         btn_start = WhiteButton("Начать игру", (200, 50))
         btn_start.clicked.connect(self.redraw_page)
         
-        self.main_layout.addWidget(btn_start, 0, 0, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addWidget(btn_start, 1, 1)
 
     def redraw_page(self):
         for i in reversed(range(self.main_layout.count())):
@@ -61,7 +63,8 @@ class MainWindow(QMainWindow):
                         
                     else:
                         cell = WhiteButton("")
-                
+                        
+                        
                 self.main_layout.addWidget(cell, i, j)
 
 app = QApplication(sys.argv)
