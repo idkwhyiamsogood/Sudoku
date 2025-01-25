@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QPushButton
 
 class CustomButton(QPushButton):
     def __init__(self, text: str, 
+                 active : bool = True,
                  textdecoration: str = "none",
                  padding: str = "10px 20px",
                  color:str = "black", 
@@ -15,10 +16,15 @@ class CustomButton(QPushButton):
                  pressedbgcolor: str = "none",
                  pressedbordercolor: str = "none",
                  border: str = "none",
-                 fontsize: int = 14, 
+                 fontsize: int = 16, 
                  fontfamily: list[str] = ["Times New Roman"],
                  size: tuple = (100,50)) -> None:
         super().__init__()
+        
+        if len(text) == 0:
+            size = (50,50)
+            
+        self.setEnabled(active)
         
         self.setText(f"{text}")
         self.setFixedSize(*size)

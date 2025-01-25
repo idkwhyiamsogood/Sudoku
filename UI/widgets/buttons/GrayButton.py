@@ -28,9 +28,8 @@ class GrayButton(QPushButton):
             }}
             
             QPushButton:hover:pressed {{
-                color: white;
-                background-color: black;
-                border: 1px solid black;
+                color: #BDBBBB;
+                border: 1px solid #BDBBBB;
             }}
         """)
 
