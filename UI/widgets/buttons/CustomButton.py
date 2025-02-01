@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QPushButton
 class CustomButton(QPushButton):
     def __init__(self, text: str, 
                  active : bool = True,
+                 objectname: str = "QPushButton",
                  textdecoration: str = "none",
                  padding: str = "10px 20px",
                  color:str = "black", 
@@ -28,9 +29,10 @@ class CustomButton(QPushButton):
         
         self.setText(f"{text}")
         self.setFixedSize(*size)
+        self.setObjectName(objectname)
         
         self.setStyleSheet(f"""
-                           QPushButton {{
+                           {objectname} {{
                                padding: {padding};
                                color: {color};
                                background-color: {bgcolor};
@@ -38,13 +40,13 @@ class CustomButton(QPushButton):
                                text-decoration: {textdecoration};   
                            }}
                            
-                           QPushButton:hover {{
+                           {objectname}:hover {{
                                color: {hovercolor};
                                background-color: {hoverbgcolor};
                                border: {border} solid {hoverbordercolor};
                            }}
                            
-                           QPushButton:hover:pressed {{
+                           {objectname}:hover:pressed {{
                                color: {pressedcolor};
                                background-color: {pressedbgcolor};
                                border: {border} solid {pressedbordercolor}

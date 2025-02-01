@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
             for j in range(9):
                 cell = self.create_button(i, j)
                 self.main_layout.addWidget(cell, i, j)
-                cell.clicked.connect(lambda _, btn=cell, x=i, y=j: self.btn_clicked(btn, x, y))
+                cell.clicked.connect(lambda _, btn=cell,: self.btn_clicked(btn, i, j))
         
         for i in range(1, 10):
             self.main_layout.addWidget(CustomButton(text="", 
@@ -76,14 +76,32 @@ class MainWindow(QMainWindow):
         else:
             return GrayButton("")
 
-    def btn_clicked(self, btn: QPushButton, x: int, y: int) -> None:
-        #Обработчик клика по кнопке.
+    def btn_clicked(self, btn: QPushButton, original_data: dict, i: int, j: int) -> None:
+        # Если данные для кнопки ещё не сохранены, сохраняем их
+        if btn not in original_data:
+            original_data[btn] = {
+                "object_name": btn.objectName(),
+                "style_sheet": btn.styleSheet(),
+            }
 
-        if btn.text() == "":
-            btn.setText(f"{1}")
-            
+        # Проверяем состояние кнопки
+        if btn.objectName() == "selected":
+            # Возвращаем исходные стили и objectName
+            btn.setObjectName(original_data[btn]["object_name"])
+            btn.setStyleSheet(original_data[btn]["style_sheet"])
         else:
-            btn.setText(f"")
+            # Применяем стиль выделения
+            btn.setObjectName("selected")
+            btn.setStyleSheet("""
+                color: blue;
+                border: 1px solid blue;
+            """)
+
+        # Для отладки выводим текущее состояние кнопки
+        print(f"Object Name: {btn.objectName()}")
+        print(f"StyleSheet: {btn.styleSheet()}")
+
+
 
 
 def main() -> None:
@@ -94,3 +112,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

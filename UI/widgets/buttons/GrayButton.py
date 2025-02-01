@@ -2,7 +2,8 @@ from PyQt6 import QtGui
 from PyQt6.QtWidgets import QPushButton
 
 class GrayButton(QPushButton):
-    def __init__(self, text: str, size: tuple = (100, 50)) -> None:
+    def __init__(self, text: str, 
+                 size: tuple = (100, 50)) -> None:
         super().__init__()
 
         if len(text) == 0:
@@ -13,21 +14,22 @@ class GrayButton(QPushButton):
 
         self.setText(f"{text}")
         self.setFixedSize(*size)
+        self.setObjectName("QPushButton-gray")
 
         self.setStyleSheet(f"""
-            QPushButton {{
+            #QPushButton-gray {{
                 padding: 10px 20px;
                 text-decoration: none;
                 border: 1px solid black;
                 background-color: #BDBBBB;
             }}
             
-            QPushButton:hover {{
+            #QPushButton-gray:hover {{
                 color: blue;
                 border: 1px solid blue;
             }}
             
-            QPushButton:hover:pressed {{
+            #QPushButton-gray:hover:pressed {{
                 color: #BDBBBB;
                 border: 1px solid #BDBBBB;
             }}
@@ -35,4 +37,4 @@ class GrayButton(QPushButton):
 
         # Установка шрифта
         self.setFont(QtGui.QFont("Times New Roman", 16))
-
+        
