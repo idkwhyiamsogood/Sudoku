@@ -1,0 +1,22 @@
+{
+    "total_games": "5",
+    "total_wins": 0,
+    "total_losses": "5",
+    "difficulty_levels": {
+        "easy": {
+            "games_played": "5",
+            "wins": 0,
+            "losses": "5"
+        },
+        "medium": {
+            "games_played": 0,
+            "wins": 0,
+            "losses": 0
+        },
+        "hard": {
+            "games_played": 0,
+            "wins": 0,
+            "losses": 0
+        }
+    }
+}
