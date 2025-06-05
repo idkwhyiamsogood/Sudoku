@@ -1,0 +1,24 @@
+QMainWindow { background: white }
+QPushButton {
+    font-size: 20px;
+    background: #D9D9D9;
+    border: none;
+}
+QPushButton[flat="true"] {
+    background: transparent;
+    border: 2px solid transparent;
+    padding: 5px;
+}
+QPushButton[flat="true"]:hover {
+    background: #e0e0e0;
+    border: 2px solid #e0e0e0;
+    border-radius: 30px;
+}
+QPushButton:hover { background: #e0e0e0; }
+QPushButton:pressed { background: #90CAF9; }
+SudokuCell {
+    font-size: 24px;
+    background: white;
+    border: 1px solid black;
+    font-weight: bold;
+}
