@@ -13,7 +13,7 @@ class Settings(QWidget):
         # Списки названий для каждой кнопки
         self.name_lists = [
             ["Уровень сложности: легкий", "Уровень сложности: средний", "Уровень сложности: сложный"],   
-            ["Режим экрана: полноэкранный", "Режим экрана: оконный"],   
+            ["Режим экрана: \n полноэкранный", "Режим экрана: оконный"],   
             ["Сбор статистики: вкл", "Сбор статистики: выкл"],    
             ["Количество подсказок: 3", "Количество подсказок: 5", "Количество подсказок: 7", "Количество подсказок: 9"],  
         ]
@@ -51,8 +51,8 @@ class Settings(QWidget):
             current_index = name_list.index(display_value)
             self.current_indices[idx] = current_index
 
-            btn = MainButton(display_value, self)
-            btn.clicked.connect(lambda checked, i=idx: self._on_button_clicked(i))
+            btn = MainButton(display_value, parent=self)
+            btn.clicked.connect(lambda checked, i=idx: self.on_button_clicked(i))
             self.buttons.append(btn)
 
             h_layout = QHBoxLayout()
@@ -65,7 +65,7 @@ class Settings(QWidget):
         self.setLayout(main_layout)
 
 
-    def _on_button_clicked(self, button_index: int):
+    def on_button_clicked(self, button_index: int):
         """
         Обработчик нажатия на кнопку с номером button_index.
         Меняет текст кнопки на следующий элемент из её списка.

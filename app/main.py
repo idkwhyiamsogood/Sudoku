@@ -8,7 +8,7 @@ from core.renderer import renderer
 from pages.main_menu import MainMenu
 from pages.game import SudokuGame
 from pages.settings import Settings
-from pages.stats import Statistics
+from pages.stats import StatisticsPage
 
 from utils.JSON import get_value_from_json
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     renderer.register_view('menu', MainMenu())
     renderer.register_view('game', SudokuGame())
     renderer.register_view('settings', Settings())
-    renderer.register_view('stats', Statistics())
+    renderer.register_view('stats', StatisticsPage())
     
     # Показ окна
     window.show()

@@ -23,6 +23,11 @@ class Renderer:
         window.setCentralWidget(central_widget)
         window.setWindowTitle("Судоку")
 
+    def get_view(self, name: str) -> QWidget:
+        if name not in self._views:
+            raise ValueError(f"Страница '{name}' не зарегестрирована")
+        return self._views[name]
+
     def register_view(self, name: str, view: QWidget):
         """Регистрация нового представления"""
         self._views[name] = view
@@ -35,22 +40,11 @@ class Renderer:
     def render(self, view_name: str):
         """Переключение на указанное представление"""
         if view_name not in self._views:
-            raise ValueError(f"View '{view_name}' not registered")
+            raise ValueError(f"Страница '{view_name}' не зарегестрирована")
         
         view = self._views[view_name]
         self._stack.setCurrentWidget(view)
         self._current_view = view_name
-
-    def get_current_view(self) -> str:
-        """Получение имени текущего представления"""
-        return self._current_view
-
-    def remove_view(self, name: str):
-        """Удаление представления"""
-        if name in self._views:
-            view = self._views[name]
-            self._stack.removeWidget(view)
-            del self._views[name]
 
     @property
     def window(self) -> QMainWindow:

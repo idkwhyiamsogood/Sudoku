@@ -4,7 +4,7 @@ from utils.JSON import get_value_from_json
 
 class SudokuLogic:
     def __init__(self):
-        self.board = None
+        self.board = None   
         self.solved = None
         self.puzzle = None
 
@@ -57,9 +57,12 @@ class SudokuLogic:
                     return False
         return True
     
-    holes = {"easy": 30, "medium": 40, "hard": 50}
+    def create_puzzle(self, solved):
+        modes = {"easy": 30, "medium": 40, "hard": 50}
 
-    def create_puzzle(self, solved, holes=holes.get(get_value_from_json("app/settings.json", "Settings.Difficulty Level"))):
+        mode = get_value_from_json("app/settings.json", "Settings.Difficulty Level")
+        holes = modes.get(mode)
+        
         # Удаляет заданное количество цифр для создания головоломки
         board = [row.copy() for row in solved]
         for _ in range(holes):

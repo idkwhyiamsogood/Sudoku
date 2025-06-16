@@ -56,6 +56,7 @@ class MainMenu(QWidget):
     def start_game(self):
         """Запуск игры"""
         renderer.render('game')
+        renderer.get_view("game").new_game()
 
     def close_app(self):
         """Закрытие приложения"""
@@ -66,3 +67,4 @@ class MainMenu(QWidget):
 
     def stats(self):
         renderer.render('stats')
+        renderer.get_view("stats").table.update_stats()

@@ -1,86 +1,62 @@
+
 from PySide6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout,
-    QLabel, QPushButton, QGridLayout
+    QWidget, QVBoxLayout,
+    QSizePolicy,  QHBoxLayout
 )
-from PySide6.QtGui import QColor, QPalette
-import sys
+from PySide6.QtCore import Qt
 
 from components.back_move import BackMove
-from utils.JSON import get_file
+from components.main_button import MainButton
+from widgets.stats_table import StatisticsTable
+from utils.JSON import change_json_value
 
+STATS_FILE = "app/stats.json"
 
-class Statistics(QWidget):
+class StatisticsPage(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.init_ui()
 
     def init_ui(self):
-        layout = QVBoxLayout(self)
+        # Основной вертикальный лейаут
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(0)
 
-        # Верхняя кнопка "Назад"
-        layout.addWidget(BackMove("menu_back.svg"))
+        # Верхний лейаут с кнопкой назад
+        top_layout = QHBoxLayout()
+        back_btn = BackMove("menu_back.svg")
+        back_btn.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        top_layout.addWidget(back_btn, alignment=Qt.AlignLeft | Qt.AlignTop)
+        top_layout.addStretch()
+        main_layout.addLayout(top_layout)
 
-        # Табличка на QWidget + QGridLayout
-        table_widget = QWidget()
-        self.grid = QGridLayout(table_widget)
+        main_layout.addStretch()
 
-        headers = ["Всего игр", "Победы", "Поражения"]
-        modes = ["Легкий режим", "Средний режим", "Сложный режим", "Всего"]
+        center_layout = QVBoxLayout()
+        center_layout.setSpacing(30)
+        self.table = StatisticsTable()
+        center_layout.addWidget(self.table, alignment=Qt.AlignHCenter)
 
-        # Заголовки столбцов
-        for col, header in enumerate(headers):
-            label = QLabel(header)
-            label.setStyleSheet("font-weight: bold; padding: 4px;")
-            self.grid.addWidget(label, 0, col + 1)
+        clear_btn = MainButton("Очистить", (300, 75))
+        clear_btn.clicked.connect(self.clear_table)
+        center_layout.addWidget(clear_btn, alignment=Qt.AlignHCenter)
 
-        # Заголовки строк
-        for row, mode in enumerate(modes):
-            label = QLabel(mode)
-            label.setStyleSheet("font-weight: bold; padding: 4px;")
-            self.grid.addWidget(label, row + 1, 0)
+        main_layout.addLayout(center_layout)
 
-        # Заполняем ячейки
-        data = get_file("app/stats.json")
+        main_layout.addStretch()
 
-        self.cells = []  # для доступа при очистке
-
-        for row in range(len(modes)):
-            row_cells = []
-            for col in range(len(headers)):
-                cell = QLabel(f"{row + 1}, {col + 1}")
-                cell.setStyleSheet("padding: 4px; border: 1px solid #ccc;")
-                self.grid.addWidget(cell, row + 1, col + 1)
-                row_cells.append(cell)
-            self.cells.append(row_cells)
-
-        # Красим первую строку
-        top_color = "background-color: rgb(200, 230, 255);"
-        for col in range(len(headers)):
-            self.cells[0][col].setStyleSheet(f"padding: 4px; border: 1px solid #ccc; {top_color}")
-
-        # Красим последнюю строку
-        bottom_color = "background-color: rgb(255, 230, 200);"
-        bottom_row = len(modes) - 1
-        for col in range(len(headers)):
-            self.cells[bottom_row][col].setStyleSheet(f"padding: 4px; border: 1px solid #ccc; {bottom_color}")
-
-        layout.addWidget(table_widget)
-
-        # Кнопка очистки
-        clear_button = QPushButton("Очистить")
-        clear_button.clicked.connect(self.clear_table)
-        layout.addWidget(clear_button)
-
-        self.setLayout(layout)
+        self.setLayout(main_layout)
 
     def clear_table(self):
-        for row_cells in self.cells:
-            for cell in row_cells:
-                cell.setText("")
+        change_json_value(STATS_FILE, "total_games", "0")
+        change_json_value(STATS_FILE, "total_wins", "0")
+        change_json_value(STATS_FILE, "total_losses", "0")
+        for level in ["easy", "medium", "hard"]:
+            change_json_value(STATS_FILE, f"difficulty_levels.{level}.games_played", "0")
+            change_json_value(STATS_FILE, f"difficulty_levels.{level}.wins", "0")
+            change_json_value(STATS_FILE, f"difficulty_levels.{level}.losses", "0")
 
-        # Вернем цвета первой и последней строки
-        top_color = "background-color: rgb(200, 230, 255);"
-        bottom_color = "background-color: rgb(255, 230, 200);"
-        for col in range(len(self.cells[0])):
-            self.cells[0][col].setStyleSheet(f"padding: 4px; border: 1px solid #ccc; {top_color}")
-            self.cells[-1][col].setStyleSheet(f"padding: 4px; border: 1px solid #ccc; {bottom_color}")
+        for row_cells in self.table.cells:
+            for lbl in row_cells:
+                lbl.setText("0 (0%)")

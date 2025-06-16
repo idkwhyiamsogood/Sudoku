@@ -7,15 +7,13 @@ from utils.JSON import get_value_from_json
 from utils.scanarios import user_loss, user_win
 
 from components.cell_button import SudokuCell
-from components.icon_button import IconButton
 from components.back_move import BackMove
 from components.message_box import CustomMessageDialog
+from components.main_button import MainButton
 
 from widgets.right_menu import RightMenu
 
 from core.logic import SudokuLogic
-from core.renderer import renderer
-
 
 class SudokuGame(QWidget):
     game_won = Signal(False)
@@ -58,7 +56,6 @@ class SudokuGame(QWidget):
         self.grid_layout = QGridLayout()
         self.grid_layout.setSpacing(0)
         
-        # Установка фиксированного размера ячеек
         cell_size = 60  # размер одной ячейки
         
         # Инициализация ячеек 9x9
@@ -97,11 +94,8 @@ class SudokuGame(QWidget):
         
         self.game_layout.addWidget(left_panel)
         self.game_layout.addWidget(self.right_menu)
-        
-        # Создание кнопки новой игры
-        self.new_game_btn = QPushButton("Новая игра")
-        self.new_game_btn.setFixedSize(QSize(300, 75))
-        self.new_game_btn.setStyleSheet("font-size: 20px; background: #90CAF9; border-radius: 37px; border: 2px solid black; font: bold;")
+    
+        self.new_game_btn = MainButton("Новая игра", (300, 75))
         self.new_game_btn.clicked.connect(self.new_game)
         self.button_layout.addWidget(self.new_game_btn)
         
@@ -111,16 +105,22 @@ class SudokuGame(QWidget):
         self.game_won.emit()
 
     def new_game(self):
+        clear_cell_styles(self)
+
         for row in range(9):
             for col in range(9):
+                change_styles(self.cells[row][col], "color: black;", "color: gray;")
                 self.cells[row][col].setProperty("countable", False)
                 self.cells[row][col].setProperty("deletable", False)
 
         self.selected_cell = None
         self.pencil_mode = False
+        icon_path = "app/public/svg/pencil_active.svg" if self.pencil_mode else "app/public/svg/pencil_inactive.svg"
+        self.right_menu.pencil_btn.setIcon(QIcon(icon_path))
         self.errorsCells = ()
         self.move_history = []
         self.hint_count = get_value_from_json('app/settings.json', 'Settings.Number of Hints')
+        self.right_menu.hint_btn.set_count(self.hint_count)
         self.error_count = 3
         self.start = False
         self.new_game_btn.show()  # Показываем кнопку при новой игре
@@ -297,7 +297,7 @@ class SudokuGame(QWidget):
                     return  # Пустая ячейка или несчитаемое значение — выходим
         
         # Формируем текущую доску
-        try:
+        try:    
             board = []
             for row in range(9):
                 current_row = []

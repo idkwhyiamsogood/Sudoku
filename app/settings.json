@@ -1,8 +1,8 @@
 {
     "Settings": {
-        "Difficulty Level": "easy",
-        "Screen Mode": "full screen",
-        "Collect Statistics": false,
-        "Number of Hints": 5
+        "Difficulty Level": "hard",
+        "Screen Mode": "not full screen",
+        "Collect Statistics": true,
+        "Number of Hints": 9
     }
 }

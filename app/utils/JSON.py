@@ -19,7 +19,9 @@ def get_value_from_json(file_path: str, key_path: str):
         return f'Путь {key_path} не найден в {file_path}'
 
 def change_json_value(file_path: str, key_path: str, new_value):
-    if not get_value_from_json("app/settings.json", "Settings.Collect Statistics"):
+    file_name = file_path.split("/")[-1]
+
+    if not get_value_from_json("app/settings.json", "Settings.Collect Statistics") and file_name == "stats.json":
         return
 
     file = Path(file_path)
@@ -43,7 +45,3 @@ def change_json_value(file_path: str, key_path: str, new_value):
         json.dump(data, f, indent=4, ensure_ascii=False)
 
     return f'Значение по пути {key_path} успешно изменено на {new_value}.'
-
-def get_file(file_path: str) -> dict:
-    with open(file_path, "r") as file:
-        return file.read()
